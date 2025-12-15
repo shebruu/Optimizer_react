@@ -11,8 +11,9 @@ import { Loader2, Calculator, FileBox } from "lucide-react";
 import StlUploadSection from "./StlUploadSection";
 import GeometryInputs from "./GeometryInputs";
 import StlPreview3D from "./STlPreview3d.tsx";
+import AnomalyButton from "./AnomalyButton";
 
-interface FormData {
+export interface FormData {
   volume_mm3: string;
   surface_area_mm2: string;
   bounding_box_x: string;
@@ -103,7 +104,7 @@ const PredictionForm = ({ onPredict, isLoading }: PredictionFormProps) => {
       return;
     }
 
-    const fd = new FormData();
+    const fd = new window.FormData();
     fd.append("stl", selectedFile);
     fd.append("scale", formData.scale);
     if (formData.use_euler_number && formData.euler_number) {
@@ -325,13 +326,10 @@ const PredictionForm = ({ onPredict, isLoading }: PredictionFormProps) => {
             onEulerChange={handleChange}
           />
           
-
-
       <StlPreview3D
         file={selectedFile}
         scale={Number(formData.scale) || 1}
       />
-
 
           <GeometryInputs
             formData={formData}
@@ -377,6 +375,15 @@ const PredictionForm = ({ onPredict, isLoading }: PredictionFormProps) => {
                 </>
               )}
             </Button>
+          </div>
+          <div className="mt-4">
+            <AnomalyButton
+              formData={formData}
+              apiBase={API_BASE}
+              disabled={isLoading}
+              onError={(msg) => msg && setError(msg)}
+              onSuccess={(msg) => msg && setSuccess(msg)}
+            />
           </div>
           <div className="mt-4">
             <Button

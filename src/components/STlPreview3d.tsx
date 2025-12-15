@@ -24,14 +24,13 @@ const StlPreview3D = ({ file, scale = 1 }: StlPreview3DProps) => {
   if (!url) {
     return (
       <div className="text-sm text-muted-foreground">
-        Aucune prévisualisation 3D disponible.
+        Aucune prévisualisation disponible.
       </div>
     );
   }
 
   return (
     <div className="w-full border rounded-md p-2 bg-muted">
-      <div className="text-sm font-medium mb-2">Visualisation 3D du STL</div>
       <div className="h-72">
         <StlViewer
           url={url}
