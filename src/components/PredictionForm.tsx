@@ -10,6 +10,7 @@ import {
 import { Loader2, Calculator, FileBox } from "lucide-react";
 import StlUploadSection from "./StlUploadSection";
 import GeometryInputs from "./GeometryInputs";
+import StlPreview3D from "./STlPreview3d.tsx";
 
 interface FormData {
   volume_mm3: string;
@@ -324,6 +325,12 @@ const PredictionForm = ({ onPredict, isLoading }: PredictionFormProps) => {
             onEulerChange={handleChange}
           />
           
+
+
+      <StlPreview3D
+        file={selectedFile}
+        scale={Number(formData.scale) || 1}
+      />
 
 
           <GeometryInputs

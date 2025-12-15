@@ -29,7 +29,7 @@ const Header = () => {
           </a>
 
   <Link to="/clusters" className="text-base text-muted-foreground hover:text-primary transition-colors font-medium">
-    Types de pièces 
+    Pièces 
   </Link>
         </nav>
       </div>

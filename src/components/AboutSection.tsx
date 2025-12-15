@@ -24,7 +24,7 @@ const features = [
 		icon: Users,
 		title: "Utilisation",
 		description:
-			"Outil conçu pour l'aide à la décision et l'optimisation des ressources dans un parc machine",
+			"Outil conçu pour l'aide à la décision et l'optimisation des ressources",
 	},
 ];
 
