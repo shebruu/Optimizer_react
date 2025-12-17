@@ -10,7 +10,7 @@ import {
 import { Loader2, Calculator, FileBox } from "lucide-react";
 import StlUploadSection from "./StlUploadSection";
 import GeometryInputs from "./GeometryInputs";
-import StlPreview3D from "./STlPreview3d.tsx";
+import StlPreview3D from "./StlPreview3d.tsx";
 import AnomalyButton from "./AnomalyButton";
 
 export interface FormData {
@@ -46,6 +46,7 @@ const PredictionForm = ({ onPredict, isLoading }: PredictionFormProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [formData, setFormData] = useState<FormData>({
+
     volume_mm3: "",
     surface_area_mm2: "",
     bounding_box_x: "",
@@ -65,6 +66,8 @@ const PredictionForm = ({ onPredict, isLoading }: PredictionFormProps) => {
   });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [isExtracting, setIsExtracting] = useState(false);
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
@@ -110,6 +113,7 @@ const PredictionForm = ({ onPredict, isLoading }: PredictionFormProps) => {
     if (formData.use_euler_number && formData.euler_number) {
       fd.append("euler_number", formData.euler_number);
     }
+      setIsExtracting(true);   
 
     try {
       const response = await fetch(`${API_BASE}/api/pieces/upload-stl`, {
@@ -183,8 +187,10 @@ const PredictionForm = ({ onPredict, isLoading }: PredictionFormProps) => {
     } catch (err) {
       setError("Erreur réseau ou serveur lors de l'extraction STL.");
       console.error("Extract STL error", err);
-    }
-  };
+  } finally {
+    setIsExtracting(false);      
+  }
+};
 
   const handleSubmit = async () => {
     setError(null);
@@ -338,25 +344,25 @@ const PredictionForm = ({ onPredict, isLoading }: PredictionFormProps) => {
             inputFields={inputFields}
           />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Button
-              type="button"
-              variant="outline"
-              size="lg"
-              className="w-full"
-              disabled={isLoading}
-              onClick={handleExtractStl}
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" /> Extraction STL...
-                </>
-              ) : (
-                <>
-                  <FileBox className="w-5 h-5" /> Extraire les
-                  caractéristiques
-                </>
-              )}
-            </Button>
+<Button
+  type="button"
+  variant="outline"
+  size="lg"
+  className="w-full"
+  disabled={isExtracting || isLoading}
+  onClick={handleExtractStl}
+>
+  {isExtracting ? (
+    <>
+      <Loader2 className="w-5 h-5 animate-spin" /> Extraction STL...
+    </>
+  ) : (
+    <>
+      <FileBox className="w-5 h-5" /> Extraire les caractéristiques
+    </>
+  )}
+</Button>
+
             <Button
               type="button"
               variant="glow"
